@@ -1,11 +1,14 @@
 import React from "react";
-import { NavLink, Outlet } from "react-router";
+import { Link, NavLink, Outlet } from "react-router";
 
 function College() {
   return (
     <div className="college" style={{ textAlign: "center" }}>
       <h2>College_Page 🎓</h2>
-      <NavLink className="link" to="student">
+      <h3>
+        <Link to="/">Go Back To Home</Link>
+      </h3>
+      <NavLink className="link" to="">
         Student
       </NavLink>
       <NavLink className="link" to="departments">
@@ -14,7 +17,7 @@ function College() {
       <NavLink className="link" to="details">
         College Details
       </NavLink>
-      <Outlet/>
+      <Outlet />
     </div>
   );
 }
