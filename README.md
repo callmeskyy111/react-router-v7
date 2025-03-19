@@ -597,3 +597,305 @@ You can directly apply styles using the `style` prop instead of CSS classes:
 
 - **`Link`** is a simple and efficient way to navigate between pages in a React app without a page reload.  
 - **`NavLink`** is best for creating interactive navigation menus that visually indicate the active page using conditional styles.  
+```js
+import React from "react";
+import { Link } from "react-router-dom";
+
+function Navigation() {
+  return (
+    <div>
+      {/* Using Link - SPA Navigation */}
+      <Link to="/about">Go to About</Link>
+      
+      {/* Using a - Page Reloads */}
+      <a href="/about">Go to About (Page Reload)</a>
+    </div>
+  );
+}
+```
+
+### **`Navigate` and `useNavigate` in React Router**
+
+In **React Router (v7)**, `Navigate` and `useNavigate` are used to programmatically navigate between different routes without using traditional links. They are essential for client-side navigation in a **Single Page Application (SPA)**.
+
+---
+
+## ✅ **1. `Navigate` Component**
+- The `<Navigate>` component is used for **redirecting** users to a different route.
+- It’s often used within a component’s JSX when you need to conditionally navigate.
+
+### 📌 **Syntax**
+```jsx
+<Navigate to="/path" replace={true} />
+```
+
+### 📖 **Props Explanation**  
+- **`to`**: The path you want to redirect to.  
+- **`replace`**: If `true`, it replaces the current history entry instead of adding a new one.
+
+---
+
+### 🧑‍💻 **Example: Using `<Navigate>` for Redirection**
+```jsx
+import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
+
+function Dashboard() {
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  if (!loggedIn) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <h1>Welcome to your Dashboard!</h1>;
+}
+
+export default Dashboard;
+```
+🔎 **Explanation**  
+- If `loggedIn` is `false`, the user will be redirected to `/login`.  
+- The `replace` prop ensures that the previous URL isn’t stored in history.
+
+---
+
+## ✅ **2. `useNavigate` Hook**
+- `useNavigate` is a programmatic hook that allows you to navigate within your app using JavaScript logic.  
+- Useful for **navigating on button clicks** or **after submitting forms**.  
+
+### 📌 **Syntax**
+```jsx
+const navigate = useNavigate();
+navigate("/path");
+```
+
+### 🧑‍💻 **Example: Using `useNavigate` for Navigation**
+```jsx
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
+function Home() {
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    navigate("/dashboard");
+  };
+
+  return (
+    <div>
+      <h1>Welcome Home!</h1>
+      <button onClick={handleLogin}>Go to Dashboard</button>
+    </div>
+  );
+}
+
+export default Home;
+```
+🔎 **Explanation**  
+- Clicking the button triggers `navigate("/dashboard")`, which redirects the user without a page reload.  
+
+---
+
+## 🔔 **When to Use `Navigate` vs `useNavigate`**
+
+| Feature              | `<Navigate>`                   | `useNavigate`                       |
+|-----------------------|--------------------------------|------------------------------------|
+| **Purpose**            | Conditional redirection in JSX| Programmatic navigation with logic|
+| **Use Case**           | After login/logout or errors  | After form submission or button click |
+| **Replace History**    | `replace={true}` option       | `navigate("/path", { replace: true })` |
+| **Access Method**      | JSX Component                 | React Hook                         |
+
+---
+
+## ⚙️ **Bonus: Additional useNavigate Options**
+You can also pass state or navigate backward and forward:
+
+- **With State**  
+```jsx
+navigate("/dashboard", { state: { userId: 123 } });
+```
+- **Go Back or Forward**  
+```jsx
+navigate(-1); // Go back one step in history
+navigate(1);  // Go forward one step in history
+```
+---
+
+## **Nested Routing in React Router**
+
+### ✅ **What is Nested Routing?**
+
+- **Nested Routing** is a concept in **React Router** where we can define routes inside other routes.  
+- It allows us to build a hierarchy of components that can render child routes within a parent route.  
+- Useful for dashboards, user profiles, and any UI with multiple sections.
+
+---
+
+## 🔎 **Why Use Nested Routing?**
+
+- Organizes routes in a clean, structured manner.
+- Enables layout sharing (e.g., sidebars, headers, footers) between different views.
+- Improves maintainability and code reusability.
+
+---
+
+## ✅ **Step 1: Installation**
+Ensure you have **React Router v7** installed:
+```bash
+npm install react-router-dom
+```
+
+---
+
+## ✅ **Step 2: Basic Structure**
+
+Here’s how nested routing generally works:
+- **Parent Route**: Contains a shared layout (like a navbar or sidebar).
+- **Child Routes**: Renders specific content inside the parent layout using the `<Outlet />` component.
+
+---
+
+## 📦 **Folder Structure Example**
+```bash
+/src
+  ├── App.jsx
+  ├── components
+  │   ├── Layout.jsx
+  │   ├── Dashboard.jsx
+  │   ├── Profile.jsx
+  │   ├── Settings.jsx
+  │   └── NotFound.jsx
+  └── index.jsx
+```
+
+---
+
+## ✅ **Step 3: Implementing Nested Routes**
+
+### **1. Layout Component (Parent)**  
+The parent component uses the `<Outlet />` to display child components.
+
+```jsx
+import React from 'react';
+import { Link, Outlet } from 'react-router-dom';
+
+function Layout() {
+  return (
+    <div>
+      <h1>Welcome to Dashboard</h1>
+      <nav>
+        <Link to="profile">Profile</Link> | {" "}
+        <Link to="settings">Settings</Link>
+      </nav>
+      {/* Outlet will render child routes here */}
+      <Outlet />
+    </div>
+  );
+}
+
+export default Layout;
+```
+
+---
+
+### **2. Child Components**  
+
+#### **Profile Component**
+```jsx
+function Profile() {
+  return <h2>Profile Page</h2>;
+}
+export default Profile;
+```
+
+#### **Settings Component**
+```jsx
+function Settings() {
+  return <h2>Settings Page</h2>;
+}
+export default Settings;
+```
+
+#### **NotFound Component**
+```jsx
+function NotFound() {
+  return <h2>404 - Page Not Found</h2>;
+}
+export default NotFound;
+```
+
+---
+
+## ✅ **Step 4: Set Up Routes Using Nested Routing**
+
+```jsx
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+import Profile from "./components/Profile";
+import Settings from "./components/Settings";
+import NotFound from "./components/NotFound";
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        {/* Parent Route */}
+        <Route path="/" element={<Layout />}>
+          {/* Nested Routes */}
+          <Route path="profile" element={<Profile />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
+
+        {/* 404 Not Found Route */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
+```
+
+---
+
+## ✅ **Explanation**
+1. **Layout Component**:  
+    - Acts as the parent route and renders common UI (e.g., header, sidebar).
+2. **Outlet**:  
+    - Displays the child components (`Profile` and `Settings`) inside the parent layout.
+3. **Nested Routes**:  
+    - Paths like `/profile` and `/settings` are rendered inside `Layout`.
+4. **404 NotFound**:  
+    - If no matching route is found, it renders the `NotFound` component.
+
+---
+
+## ✅ **Bonus: Navigate Between Nested Routes with useNavigate**
+
+You can also programmatically navigate within the nested routes using `useNavigate`.
+
+```jsx
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
+function Dashboard() {
+  const navigate = useNavigate();
+
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <button onClick={() => navigate("/profile")}>Go to Profile</button>
+      <button onClick={() => navigate("/settings")}>Go to Settings</button>
+    </div>
+  );
+}
+
+export default Dashboard;
+```
+
+---
+
+## ✅ **Conclusion**
+- Nested routing helps in maintaining a clean code structure by logically grouping routes.
+- It’s perfect for applications with multiple views under one layout (e.g., admin dashboards, user portals).
+- We can customize child routes further using `Outlet` and route parameters.

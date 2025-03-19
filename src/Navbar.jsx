@@ -6,7 +6,7 @@ function Navbar() {
   return (
     <div className="header">
       <div>
-        <Link className="link" to='/' title="Home_Page">
+        <Link className="link" to="/" title="Home_Page">
           <h2>⚛️</h2>
         </Link>
       </div>
@@ -21,6 +21,9 @@ function Navbar() {
           <li>
             <Link to="/about">About📄</Link>
           </li>
+          <li>
+            <Link to="/college">College🎓</Link>
+          </li>
         </ul>
       </div>
     </div>
@@ -28,4 +31,3 @@ function Navbar() {
 }
 
 export default Navbar;
-

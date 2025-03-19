@@ -16,7 +16,7 @@ body {
   list-style-type: none;
   margin: auto;
   justify-content: space-around;
-  width: 200px;
+  width: 300px;
 }
 
 .header ul li {
@@ -30,4 +30,10 @@ body {
 .header .link {
   text-decoration: none;
   font-size: 20px;
+}
+
+.college .link {
+  text-decoration: none;
+  font-size: 20px;
+  margin: 10px;
 }
